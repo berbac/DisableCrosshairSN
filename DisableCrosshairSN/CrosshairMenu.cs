@@ -26,9 +26,9 @@ namespace DisableCrosshairSN
         public static void AddGerneralTab_Postfix(uGUI_OptionsPanel __instance)
         {
             __instance.AddHeading(0, "Crosshair");
-            __instance.AddToggleOption(0, "Disable crosshair in seamoth", Config.NoCrosshairInSeaMoth, (bool v) => Config.NoCrosshairInSeaMoth = v);
-            __instance.AddToggleOption(0, "Disable crosshair in prawn suit", Config.NoCrosshairInPrawnSuit, (bool v) => Config.NoCrosshairInPrawnSuit = v);
-            __instance.AddToggleOption(0, "Disable crosshair completely", Config.DisableCrosshair, (bool v) => Config.DisableCrosshair = v);
+            __instance.AddToggleOption(0, "Hidden while in seamoth", Config.NoCrosshairInSeaMoth, (bool v) => Config.NoCrosshairInSeaMoth = v);
+            __instance.AddToggleOption(0, "Hidden while in prawn suit", Config.NoCrosshairInPrawnSuit, (bool v) => Config.NoCrosshairInPrawnSuit = v);
+            __instance.AddToggleOption(0, "Always hidden", Config.DisableCrosshair, (bool v) => Config.DisableCrosshair = v);
         }
 
         public static void SerializeSettings_Postfix(GameSettings.ISerializer serializer)

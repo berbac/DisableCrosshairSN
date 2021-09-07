@@ -5,12 +5,11 @@ namespace DisableCrosshairSN
     [HarmonyPatch(typeof(uGUI), "Update")]
     public static class CrosshairPatcher
     {
-        private static bool _crosshairOff;
+        private static bool _crosshairOff = false;
 
-        [HarmonyPrefix]
         public static bool Prefix()
         {
-            if (_crosshairOff != true && CrosshairMenu.Config.DisableCrosshair)
+            if (!_crosshairOff && CrosshairMenu.Config.DisableCrosshair)
             {
                 HandReticle.main.RequestCrosshairHide();
                 _crosshairOff = true;
@@ -22,9 +21,9 @@ namespace DisableCrosshairSN
                 return false;
             }
 
-            else if (_crosshairOff != true &&
+            else if (!_crosshairOff &&
                 ((CrosshairMenu.Config.NoCrosshairInSeaMoth && Player.main.inSeamoth) ||
-                (CrosshairMenu.Config.NoCrosshairInSeaMoth && Player.main.inExosuit)))
+                (CrosshairMenu.Config.NoCrosshairInPrawnSuit && Player.main.inExosuit)))
             {
                 HandReticle.main.RequestCrosshairHide();
                 _crosshairOff = true;
