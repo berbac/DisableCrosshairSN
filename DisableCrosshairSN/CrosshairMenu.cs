@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SMLHelper.V2.Json;
 
 namespace DisableCrosshairSN
@@ -19,11 +19,11 @@ namespace DisableCrosshairSN
         {
             Config.Load(); // load crosshair config in config.json
             _harmony = new Harmony("com.berbac.subnautica.disablecrosshair.mod");
-            _harmony.Patch(AccessTools.Method(typeof(uGUI_OptionsPanel), "AddGeneralTab", null, null), null, new HarmonyMethod(typeof(CrosshairMenu).GetMethod("AddGerneralTab_Postfix")), null);
+            _harmony.Patch(AccessTools.Method(typeof(uGUI_OptionsPanel), "AddGeneralTab", null, null), null, new HarmonyMethod(typeof(CrosshairMenu).GetMethod("AddGeneralTab_Postfix")), null);
             _harmony.Patch(AccessTools.Method(typeof(GameSettings), "SerializeSettings", null, null), null, new HarmonyMethod(typeof(CrosshairMenu).GetMethod("SerializeSettings_Postfix")), null);
         }
 
-        public static void AddGerneralTab_Postfix(uGUI_OptionsPanel __instance)
+        public static void AddGeneralTab_Postfix(uGUI_OptionsPanel __instance)
         {
             __instance.AddHeading(0, "Crosshair");
             __instance.AddToggleOption(0, "Disable crosshair in seamoth", Config.NoCrosshairInSeaMoth, (bool v) => Config.NoCrosshairInSeaMoth = v);
