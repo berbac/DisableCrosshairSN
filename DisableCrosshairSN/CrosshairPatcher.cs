@@ -9,17 +9,18 @@ namespace DisableCrosshairSN
 
         public static bool Prefix()
         {
-            if (!_crosshairOff && CrosshairMenu.Config.DisableCrosshair)
+            if (_crosshairOff && CrosshairMenu.Config.DisableCrosshair)
+            {
+                return true;
+            }
+
+            else if (!_crosshairOff && CrosshairMenu.Config.DisableCrosshair)
             {
                 HandReticle.main.RequestCrosshairHide();
                 _crosshairOff = true;
                 return false;
             }
 
-            else if (_crosshairOff && CrosshairMenu.Config.DisableCrosshair)
-            {
-                return false;
-            }
 
             else if (!_crosshairOff &&
                 ((CrosshairMenu.Config.NoCrosshairInSeaMoth && Player.main.inSeamoth) ||
