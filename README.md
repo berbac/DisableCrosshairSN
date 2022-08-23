@@ -1,9 +1,11 @@
 # DisableCrosshairSN
 
-Adds three options to the "General" tab of the Subnautica options menu:
+Disables the crosshair when certain conditions are met.
 
-- "Disable crosshair in seatruck"
+Adds a section "Hide Crosshair" to the "General" tab of the Subnautica options menu:
 
-- "Disable crosshair in prawn suit"
+- "In Seamoth"
 
-- "Disable crosshair completely"
+- "In Prawn Suit"
+
+- "While Walking/Swimming"
