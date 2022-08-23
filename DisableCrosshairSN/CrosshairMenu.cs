@@ -7,7 +7,7 @@ namespace DisableCrosshairSN
     { // these are the default values
         public bool NoCrosshairInSeaMoth = false; 
         public bool NoCrosshairInPrawnSuit = false;
-        public bool DisableCrosshair = false;
+        public bool NoCrosshairOnFoot = false;
     }
     public static class CrosshairMenu
     {
@@ -25,10 +25,10 @@ namespace DisableCrosshairSN
 
         public static void AddGeneralTab_Postfix(uGUI_OptionsPanel __instance)
         {
-            __instance.AddHeading(0, "Crosshair");
-            __instance.AddToggleOption(0, "Hidden while in seamoth", Config.NoCrosshairInSeaMoth, (bool v) => Config.NoCrosshairInSeaMoth = v);
-            __instance.AddToggleOption(0, "Hidden while in prawn suit", Config.NoCrosshairInPrawnSuit, (bool v) => Config.NoCrosshairInPrawnSuit = v);
-            __instance.AddToggleOption(0, "Always hidden", Config.DisableCrosshair, (bool v) => Config.DisableCrosshair = v);
+            __instance.AddHeading(0, "Hide Crosshair");
+            __instance.AddToggleOption(0, "In Seamoth", Config.NoCrosshairInSeaMoth, (bool v) => Config.NoCrosshairInSeaMoth = v);
+            __instance.AddToggleOption(0, "In Prawn Suit", Config.NoCrosshairInPrawnSuit, (bool v) => Config.NoCrosshairInPrawnSuit = v);
+            __instance.AddToggleOption(0, "While Walking/Swimming", Config.NoCrosshairOnFoot, (bool v) => Config.NoCrosshairOnFoot = v);
         }
 
         public static void SerializeSettings_Postfix(GameSettings.ISerializer serializer)

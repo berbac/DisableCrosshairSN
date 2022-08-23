@@ -1,62 +1,71 @@
 ﻿using HarmonyLib;
+
 namespace DisableCrosshairSN
 {
-    [HarmonyPatch(typeof(uGUI), "Update")]
-    public static class CrosshairPatcher
+    class CrosshairDisabler
     {
-        private static bool _crosshairOff;// = false;
-
-        public static bool Prefix()
+        [HarmonyPatch(typeof(GUIHand), "OnUpdate")]
+        public static class CrosshairPatcher
         {
-            //File.AppendAllText("CrosshairMod.txt", HandReticle.main.interactPrimaryText.text.ToString() );
+            private static bool _crosshairOff;
 
-            if ((HandReticle.main.interactPrimaryText.text.ToString().Length > 0) )
-            { // Checks for tooltip text around the crosshair. If found enables crosshair
+            public static void Postfix(GUIHand __instance)
+            {
+/*              Targeting.GetTarget(Player.main.gameObject, 50, out var tar, out var num);
+                File.AppendAllText("DisableCrosshairSNLog.txt", "\n __instance.GetActiveTarget() : " + __instance.GetActiveTarget() +
+                   "\ntar : "+ tar );*/
+
+
+                if (Player.main == null) // skip this if no Player.main instance exists
+                    return;
+
+                var activeTarget = __instance.GetActiveTarget();
+                var crosshairHasText = HandReticle.main.interactPrimaryText.text.ToString().Length > 0;
+               
                 if (_crosshairOff)
                 {
-                    HandReticle.main.UnrequestCrosshairHide();
-                    _crosshairOff = false;
-                    return false;
+                    if ((activeTarget && !Player.main.inSeamoth && !Player.main.inExosuit) || crosshairHasText)
+                    {
+                        HandReticle.main.UnrequestCrosshairHide();
+                        _crosshairOff = false;
+                        return;
+                    }
+
+                    else if (CrosshairMenu.Config.NoCrosshairOnFoot && Player.main.currentMountedVehicle == null)
+                        return;
+
+                    else if ((!Player.main.inExosuit && !Player.main.inSeamoth) ||
+                        (!CrosshairMenu.Config.NoCrosshairInPrawnSuit && Player.main.inExosuit) ||
+                        (!CrosshairMenu.Config.NoCrosshairInSeaMoth && Player.main.inSeamoth))
+                    {
+                        HandReticle.main.UnrequestCrosshairHide();
+                        _crosshairOff = false;
+                        return;
+                    }
+                    else return;
                 }
-                else
+
+                else //(!_crosshairOff)
                 {
-                    return true;
+                    if ((activeTarget && !(Player.main.inSeamoth || Player.main.inExosuit)) || crosshairHasText)
+                        return;
+
+                    else if (CrosshairMenu.Config.NoCrosshairOnFoot && Player.main.currentMountedVehicle == null)
+                    {
+                        HandReticle.main.RequestCrosshairHide();
+                        _crosshairOff = true;
+                        return;
+                    }
+
+                    else if ((CrosshairMenu.Config.NoCrosshairInSeaMoth && Player.main.inSeamoth) ||
+                            (CrosshairMenu.Config.NoCrosshairInPrawnSuit && Player.main.inExosuit))
+                    {
+                        HandReticle.main.RequestCrosshairHide();
+                        _crosshairOff = true;
+                    }
                 }
             }
-
-            else if (_crosshairOff && CrosshairMenu.Config.DisableCrosshair)
-            {
-                return true;
-            }
-
-            else if (!_crosshairOff && CrosshairMenu.Config.DisableCrosshair)
-            {
-                HandReticle.main.RequestCrosshairHide();
-                _crosshairOff = true;
-                return false;
-            }
-
-            else if (!_crosshairOff &&
-                ((CrosshairMenu.Config.NoCrosshairInSeaMoth && Player.main.inSeamoth) ||
-                (CrosshairMenu.Config.NoCrosshairInPrawnSuit && Player.main.inExosuit)))
-            {
-                HandReticle.main.RequestCrosshairHide();
-                _crosshairOff = true;
-                return false;
-            }
-
-            else if (_crosshairOff &&
-                ((!Player.main.inExosuit && !Player.main.inSeamoth) ||
-                (Player.main.inExosuit && !CrosshairMenu.Config.NoCrosshairInPrawnSuit) ||
-                (Player.main.inSeamoth && !CrosshairMenu.Config.NoCrosshairInSeaMoth)))
-            {
-                HandReticle.main.UnrequestCrosshairHide();
-                _crosshairOff = false;
-                return false;
-            }
-            return true;
         }
     }
-
 }
 

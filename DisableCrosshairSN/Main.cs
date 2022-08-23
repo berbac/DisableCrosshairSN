@@ -13,6 +13,5 @@ namespace DisableCrosshairSN
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), "DisableCrosshairSN");
             CrosshairMenu.Patch();
         }
-
     }
 }
