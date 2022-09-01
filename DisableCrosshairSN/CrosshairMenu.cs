@@ -4,7 +4,8 @@ using SMLHelper.V2.Json;
 namespace DisableCrosshairSN
 {
     public class CrosshairOptions : ConfigFile
-    { // these are the default values
+    { 
+        // these are the default values
         public bool NoCrosshairInSeaMoth = false; 
         public bool NoCrosshairInPrawnSuit = false;
         public bool NoCrosshairOnFoot = false;
@@ -17,7 +18,7 @@ namespace DisableCrosshairSN
         [HarmonyPatch(typeof(uGUI_OptionsPanel), "Update")]
         public static void Patch()
         {
-            Config.Load(); // load crosshair config in config.json
+            Config.Load(); // load crosshair config from config.json
             _harmony = new Harmony("com.berbac.subnautica.disablecrosshair.mod");
             _harmony.Patch(AccessTools.Method(typeof(uGUI_OptionsPanel), "AddGeneralTab", null, null), null, new HarmonyMethod(typeof(CrosshairMenu).GetMethod("AddGeneralTab_Postfix")), null);
             _harmony.Patch(AccessTools.Method(typeof(GameSettings), "SerializeSettings", null, null), null, new HarmonyMethod(typeof(CrosshairMenu).GetMethod("SerializeSettings_Postfix")), null);
@@ -33,9 +34,7 @@ namespace DisableCrosshairSN
 
         public static void SerializeSettings_Postfix(GameSettings.ISerializer serializer)
         {
-            Config.Save(); // save crosshair config in config.json
+            Config.Save(); // save crosshair config to config.json
         }
-
     }
-
 }

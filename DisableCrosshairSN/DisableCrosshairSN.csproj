@@ -73,6 +73,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assembly-CSharp_publicized.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(ProjectDir)bin\Debug\DisableCrosshairSN.dll" "D:\SteamWin\steamapps\common\Subnautica\QMods\DisableCrosshairSN"</PostBuildEvent>
