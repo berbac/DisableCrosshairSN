@@ -6,20 +6,21 @@ namespace DisableCrosshairSN
     public class CrosshairOptions : ConfigFile
     { 
         // these are the default values
-        public bool NoCrosshairInSeaMoth = false; 
-        public bool NoCrosshairInPrawnSuit = false;
-        public bool NoCrosshairOnFoot = false;
+        public bool NoCrosshairInSeaMoth = true; 
+        public bool NoCrosshairInPrawnSuit = true;
+        public bool NoCrosshairOnFoot = true;
     }
+    [HarmonyPatch(typeof(uGUI_OptionsPanel))]
     public static class CrosshairMenu
     {
         public static CrosshairOptions Config { get; } = new CrosshairOptions();
         private static Harmony _harmony;
 
-        [HarmonyPatch(typeof(uGUI_OptionsPanel), "Update")]
+        [HarmonyPatch(nameof(uGUI_OptionsPanel.Update))]
         public static void Patch()
         {
             Config.Load(); // load crosshair config from config.json
-            _harmony = new Harmony("com.berbac.subnautica.disablecrosshair.mod");
+            _harmony = new Harmony("com.berbac.subnautica.disablecrosshair.mod.menu");
             _harmony.Patch(AccessTools.Method(typeof(uGUI_OptionsPanel), "AddGeneralTab", null, null), null, new HarmonyMethod(typeof(CrosshairMenu).GetMethod("AddGeneralTab_Postfix")), null);
             _harmony.Patch(AccessTools.Method(typeof(GameSettings), "SerializeSettings", null, null), null, new HarmonyMethod(typeof(CrosshairMenu).GetMethod("SerializeSettings_Postfix")), null);
         }
