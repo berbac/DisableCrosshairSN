@@ -58,9 +58,9 @@ namespace DisableCrosshairSN
 
             if (crosshairIsOff)
             {
-                if (((!CrosshairMenu.Config.NoCrosshairOnFoot || targetNeedsCrosshair) && isNormalOrSitting) ||
-                   ((!CrosshairMenu.Config.NoCrosshairInPrawnSuit || targetNeedsCrosshair) && Player.main.inExosuit) ||
-                   (!CrosshairMenu.Config.NoCrosshairInSeaMoth && Player.main.inSeamoth))
+                if (((!CrosshairOptions.NoCrosshairOnFoot || targetNeedsCrosshair) && isNormalOrSitting) ||
+                   ((!CrosshairOptions.NoCrosshairInPrawnSuit || targetNeedsCrosshair) && Player.main.inExosuit) ||
+                   (!CrosshairOptions.NoCrosshairInSeaMoth && Player.main.inSeamoth))
                 {
                     HandReticle.main.UnrequestCrosshairHide();
                     crosshairIsOff = false;
@@ -72,9 +72,9 @@ namespace DisableCrosshairSN
 
             else // Crosshair is currently on
             {
-                if ((CrosshairMenu.Config.NoCrosshairOnFoot && isNormalOrSitting && !targetNeedsCrosshair) ||
-                   (CrosshairMenu.Config.NoCrosshairInSeaMoth && Player.main.inSeamoth) ||
-                   (CrosshairMenu.Config.NoCrosshairInPrawnSuit && Player.main.inExosuit && !targetNeedsCrosshair))
+                if ((CrosshairOptions.NoCrosshairOnFoot && isNormalOrSitting && !targetNeedsCrosshair) ||
+                   (CrosshairOptions.NoCrosshairInSeaMoth && Player.main.inSeamoth) ||
+                   (CrosshairOptions.NoCrosshairInPrawnSuit && Player.main.inExosuit && !targetNeedsCrosshair))
                 {
                     HandReticle.main.RequestCrosshairHide();
                     crosshairIsOff = true;
