@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 using System;
-using System.IO;
 
 namespace DisableCrosshairSN
 {
@@ -64,7 +63,6 @@ namespace DisableCrosshairSN
                 {
                     HandReticle.main.UnrequestCrosshairHide();
                     crosshairIsOff = false;
-                    File.AppendAllText("DisableCrosshair_Log.txt", " Case: Enable CH");
                     return;
                 }
                 else return;
@@ -78,7 +76,6 @@ namespace DisableCrosshairSN
                 {
                     HandReticle.main.RequestCrosshairHide();
                     crosshairIsOff = true;
-                    File.AppendAllText("DisableCrosshair_Log.txt", " Case: Disable CH");
                     return;
                 }
                 else return;
