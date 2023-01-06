@@ -76,6 +76,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)bin\Debug\DisableCrosshairSN.dll" "D:\SteamWin\steamapps\common\Subnautica\BepInEx\plugins\DisableCrosshairSN"</PostBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)bin\Debug\DisableCrosshairSN.dll" "D:\SteamWin\steamapps\common\Subnautica\BepInEx\plugins\DisableCrosshairSN"
+copy "$(ProjectDir)bin\Debug\DisableCrosshairSN.dll" "$(ProjectDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

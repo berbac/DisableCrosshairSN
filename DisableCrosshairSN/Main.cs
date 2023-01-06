@@ -11,7 +11,7 @@ namespace DisableCrosshairSN
     {
         private const string myGUID = "com.berbac.subnautica.disablecrosshair.mod";
         private const string modName = "DisableCrosshairSN";
-        private const string versionString = "1.4.2";
+        private const string versionString = "1.4.7";
 
         //public static ConfigEntry<bool> ConfigNoCrosshairInSeaMoth;
         //public static ConfigEntry<bool> ConfigNoCrosshairInPrawnSuit;
