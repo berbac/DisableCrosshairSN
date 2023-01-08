@@ -31,6 +31,7 @@ namespace DisableCrosshairSN
             __instance.AddToggleOption(0, "In Seamoth", CrosshairOptions.NoCrosshairInSeaMoth, (bool v) => CrosshairOptions.NoCrosshairInSeaMoth = v);
             __instance.AddToggleOption(0, "In Prawn Suit", CrosshairOptions.NoCrosshairInPrawnSuit, (bool v) => CrosshairOptions.NoCrosshairInPrawnSuit = v);
             __instance.AddToggleOption(0, "While Walking/Swimming", CrosshairOptions.NoCrosshairOnFoot, (bool v) => CrosshairOptions.NoCrosshairOnFoot = v);
+            __instance.AddToggleOption(0, "While piloting the Cyclops", CrosshairOptions.NoCrosshairPilotingCylops, (bool v) => CrosshairOptions.NoCrosshairPilotingCylops = v);
         }
 
         public static void SerializeSettings_Postfix(GameSettings.ISerializer serializer)
@@ -38,6 +39,7 @@ namespace DisableCrosshairSN
             CrosshairOptions.NoCrosshairInSeaMoth = serializer.Serialize("NoCrosshairinSeaMoth", CrosshairOptions.NoCrosshairInSeaMoth);
             CrosshairOptions.NoCrosshairInPrawnSuit = serializer.Serialize("NoCrosshairInPrawnSuit", CrosshairOptions.NoCrosshairInPrawnSuit);
             CrosshairOptions.NoCrosshairOnFoot = serializer.Serialize("NoCrosshairOnFoot", CrosshairOptions.NoCrosshairOnFoot);
+            CrosshairOptions.NoCrosshairPilotingCylops = serializer.Serialize("NoCrosshairPilotingCylops", CrosshairOptions.NoCrosshairPilotingCylops);
             //Config.Save(); // save crosshair config to config.json
 
         }
