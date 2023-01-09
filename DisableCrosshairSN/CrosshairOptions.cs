@@ -6,5 +6,6 @@
         public static bool NoCrosshairInPrawnSuit = true;
         public static bool NoCrosshairOnFoot = true;
         public static bool NoCrosshairPilotingCylops = true;
+        public static bool NoControlHints = true;
     }
 }

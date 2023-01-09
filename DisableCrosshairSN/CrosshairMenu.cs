@@ -32,6 +32,7 @@ namespace DisableCrosshairSN
             __instance.AddToggleOption(0, "In Prawn Suit", CrosshairOptions.NoCrosshairInPrawnSuit, (bool v) => CrosshairOptions.NoCrosshairInPrawnSuit = v);
             __instance.AddToggleOption(0, "While Walking/Swimming", CrosshairOptions.NoCrosshairOnFoot, (bool v) => CrosshairOptions.NoCrosshairOnFoot = v);
             __instance.AddToggleOption(0, "While piloting the Cyclops", CrosshairOptions.NoCrosshairPilotingCylops, (bool v) => CrosshairOptions.NoCrosshairPilotingCylops = v);
+            __instance.AddToggleOption(0, "Disable control hints (e.g. Press B to exit)", CrosshairOptions.NoControlHints, (bool v) => CrosshairOptions.NoControlHints = v);
         }
 
         public static void SerializeSettings_Postfix(GameSettings.ISerializer serializer)
@@ -40,6 +41,7 @@ namespace DisableCrosshairSN
             CrosshairOptions.NoCrosshairInPrawnSuit = serializer.Serialize("NoCrosshairInPrawnSuit", CrosshairOptions.NoCrosshairInPrawnSuit);
             CrosshairOptions.NoCrosshairOnFoot = serializer.Serialize("NoCrosshairOnFoot", CrosshairOptions.NoCrosshairOnFoot);
             CrosshairOptions.NoCrosshairPilotingCylops = serializer.Serialize("NoCrosshairPilotingCylops", CrosshairOptions.NoCrosshairPilotingCylops);
+            CrosshairOptions.NoControlHints = serializer.Serialize("NoControlHints", CrosshairOptions.NoControlHints);
             //Config.Save(); // save crosshair config to config.json
 
         }

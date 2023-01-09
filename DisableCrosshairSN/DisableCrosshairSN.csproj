@@ -68,6 +68,7 @@
     <Compile Include="CrosshairMenu.cs" />
     <Compile Include="CrosshairOptions.cs" />
     <Compile Include="CrosshairPatcher.cs" />
+    <Compile Include="ControlHintPatcher.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

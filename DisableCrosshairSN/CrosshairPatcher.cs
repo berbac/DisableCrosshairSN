@@ -132,8 +132,11 @@ namespace DisableCrosshairSN
         public static bool GetCyclopsMotorModeButtonMouseOver()
         {
             // this enables the crosshair for mouseover on motorbutton in cyclops for a given timespan
-            ShouldHideCrosshair = false;
-            cyclopsMotorButtonTimer = DateTime.Now.AddSeconds(cyclopsMotorButtonShowCrosshairSeconds);
+            if (isPilotingCyclops)
+            {
+                ShouldHideCrosshair = false;
+                cyclopsMotorButtonTimer = DateTime.Now.AddSeconds(cyclopsMotorButtonShowCrosshairSeconds);
+            }
             return true;
         }
     }
