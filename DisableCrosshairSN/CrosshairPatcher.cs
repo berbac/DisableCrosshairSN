@@ -1,11 +1,11 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Timers;
 using System.IO;
 
 namespace DisableCrosshairSN
 {
-    //[HarmonyPatch]
     [HarmonyPatch(typeof(GUIHand))]
     public static class CrosshairPatcher
     {
@@ -13,24 +13,11 @@ namespace DisableCrosshairSN
         internal static string[] showCrosshairWhilePointingAt = { "MapRoomFunctionality(Clone)", "SeaTruckSleeperModule(Clone)", "Jukebox(Clone)" }; // special cases to show crosshair
         internal static string techType;
         internal static bool textHand;
-        //internal static bool shieldButtonHover;
-        //internal static bool cyclopseEngineChangeStateMouseHover;
         //internal static int logTime = DateTime.Now.Second;
         internal static int hideCount;
-
-        //[HarmonyPatch(typeof(CyclopsEngineChangeState), nameof(CyclopsEngineChangeState.Update))]
-        //[HarmonyPrefix]
-        //public static void CycopseGetEngineChangeStateHover(bool ___mouseHover)
-        //{
-        //    cyclopseEngineChangeStateMouseHover = ___mouseHover;
-        //}
-
-        //[HarmonyPatch(typeof(CyclopsShieldButton), nameof(CyclopsShieldButton.Update))]
-        //[HarmonyPrefix]
-        //public static void CyclpseGetShieldButton(bool ___mouseHover)
-        //{
-        //    shieldButtonHover = ___mouseHover;
-        //}
+        internal static bool isPilotingCyclops;
+        internal static DateTime cyclopsMotorButtonTimer;
+        internal static double cyclopsMotorButtonShowCrosshairSeconds = 2d;
 
         [HarmonyPatch(typeof(HandReticle), nameof(HandReticle.UpdateText))]
         [HarmonyPrefix]
@@ -44,8 +31,11 @@ namespace DisableCrosshairSN
         [HarmonyPostfix]
         public static void OnUpdate_Postfix(GUIHand __instance, GUIHand.GrabMode ___grabMode)
         {
-            if (Player.main == null) // skip block if no Player.main instance exists
+            //TODO: neccessary?
+            if (Player.main == null || cyclopsMotorButtonTimer > DateTime.Now) // skip block if no Player.main instance exists or if cyclopsmotorbutton was mousovered
+            {
                 return;
+            }
 
             // getting techType for map room screen, jukebox etc.
             // check if CH needs to be enabled for interaction while on foot/swimming
@@ -81,20 +71,19 @@ namespace DisableCrosshairSN
             //        "\n hideCount: " + hideCount +
             //        "\n ShouldHideCrosshair: " + ShouldHideCrosshair +
             //        "\n _cinematicModeActive: " + Player.main.cinematicModeActive +
-            //        //"\n CyclopseShieldButtonMouseHover: " + shieldButtonHover +
-            //        //"\n cyclopseEngineChangeStateMouseHover: " + cyclopseEngineChangeStateMouseHover +
+            //        "\n MousOverMotorButton: " + isMouseOverCyclopsMotorModeButton +
             //        "\n" + DateTime.Now +
             //        "\n____________________________________");
             //    logTime = DateTime.Now.Second;
             //}
-
+            //isMouseOverCyclopsMotorModeButton = false;
             if (hideCount > 0) // crosshair is currently off
             {
                 if (((!CrosshairOptions.NoCrosshairOnFoot || targetNeedsCrosshair) && isNormalOrSitting) ||
                    ((!CrosshairOptions.NoCrosshairInPrawnSuit || targetNeedsCrosshair) && Player.main.inExosuit) ||
-                   (!CrosshairOptions.NoCrosshairInSeaMoth && Player.main.inSeamoth))
+                   (!CrosshairOptions.NoCrosshairInSeaMoth && Player.main.inSeamoth) ||
+                   ((!CrosshairOptions.NoCrosshairPilotingCylops || targetNeedsCrosshair) && isPilotingCyclops))
                 {
-                    //HandReticle.main.UnrequestCrosshairHide();
                     ShouldHideCrosshair = false;
                     return;
                 }
@@ -105,9 +94,9 @@ namespace DisableCrosshairSN
             {
                 if ((CrosshairOptions.NoCrosshairOnFoot && isNormalOrSitting && !targetNeedsCrosshair) ||
                    (CrosshairOptions.NoCrosshairInSeaMoth && Player.main.inSeamoth) ||
-                   (CrosshairOptions.NoCrosshairInPrawnSuit && Player.main.inExosuit && !targetNeedsCrosshair))
+                   (CrosshairOptions.NoCrosshairInPrawnSuit && Player.main.inExosuit && !targetNeedsCrosshair) ||
+                   (CrosshairOptions.NoCrosshairPilotingCylops && isPilotingCyclops && !targetNeedsCrosshair))
                 {
-                    //HandReticle.main.RequestCrosshairHide();
                     ShouldHideCrosshair = true;
                     return;
                 }
@@ -119,14 +108,33 @@ namespace DisableCrosshairSN
         [HarmonyPostfix]
         public static void SetHideCount(ref int ___hideCount)
         {
+            // this enables and disables the crosshair
             if (ShouldHideCrosshair)
             {
-                ___hideCount = 1;
+                ___hideCount = 1; // hide
             }
             else
             {
-                ___hideCount = 0;
+                ___hideCount = 0; //show
             }
+        }
+
+        [HarmonyPatch(typeof(CyclopsHelmHUDManager),nameof(CyclopsHelmHUDManager.Update))]
+        [HarmonyPostfix]
+        public static void GetPlayerPilotingCyclops(ref bool ___hudActive)
+        {
+            // this checks for the cyclops hud meaning if true the player is piloting it
+            isPilotingCyclops = ___hudActive;
+        }
+
+        [HarmonyPatch(typeof(CyclopsMotorModeButton), nameof(CyclopsMotorModeButton.OnMouseOver))]
+        [HarmonyPrefix]
+        public static bool GetCyclopsMotorModeButtonMouseOver()
+        {
+            // this enables the crosshair for mouseover on motorbutton in cyclops for a given timespan
+            ShouldHideCrosshair = false;
+            cyclopsMotorButtonTimer = DateTime.Now.AddSeconds(cyclopsMotorButtonShowCrosshairSeconds);
+            return true;
         }
     }
 }
