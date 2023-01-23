@@ -9,3 +9,5 @@ Adds a section "Hide Crosshair" to the "General" tab of the Subnautica options m
 - "In Prawn Suit"
 
 - "While Walking/Swimming"
+
+- "While piloting the Cyclops"
